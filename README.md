@@ -10,7 +10,7 @@ inpunpack (file)
 
 To pack a folder back to an INP file again run
 ```
-inpunpack c (file)
+inpunpack c (folder)
 ```
 
 The contents of the file will be dumped to a folder of the same name
