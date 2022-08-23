@@ -1,0 +1,8 @@
+name "inpunpack"
+description "Unpack and pack Inochi2D model files"
+authors "cli-l"
+copyright "Copyright © 2022, cli-l"
+license "BSD 2-clause"
+dependency "inochi2d" version="~>0.7.2"
+targetPath "out/"
+workingDirectory "out/"
