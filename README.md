@@ -1,5 +1,5 @@
 # INPUnpack
-A small utiltiy that allows unpacking and repacking a packed INP file for study or for data recovery purposes.
+A small utiltiy that allows unpacking and repacking a packed INP file for study and data recovery purposes.
 
 # How to use
 
@@ -14,4 +14,5 @@ inpunpack c (folder)
 ```
 
 The contents of the file will be dumped to a folder of the same name
+
 The contents of a folder will be packed to a file of the same name with the .inp extension.
