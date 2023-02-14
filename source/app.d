@@ -9,24 +9,73 @@ import std.format;
 import std.json;
 import std.bitmanip;
 import std.range;
+import commandr;
 
-void main(string[] args) {
+int main(string[] iargs) {
+    Program program = new Program("inpunpack", "1.1");
+    ProgramArgs args = program
+        .summary("Pack and unpack Inochi2D INP and INX files")
+        .author("Luna the Foxgirl")
+        .add(
+            new Command("unpack", "Unpack INP file")
+                .add(new Argument("files", "Files to unpack").repeating())
+                .add(new commandr.Flag("r", "raw", "Unpack without validating JSON"))
+        )
+        .add(
+            new Command("pack", "Pack INP file")
+                .add(new Argument("paths", "Paths/directories to unpack").repeating())
+        )
+        .parse(iargs);
     try {
-        if (args.length == 1 || (args[1] == "c" && args.length != 3)) {
-            stdio.writeln("inpunpack <c> FILE/FOLDER");
-            return;
-        }
-        if (args[1] == "c") {
-            pack(args[2]);
-        } else {
-            unpack(args[1]);
-        }
-    } catch(Throwable t) {
-        stdio.writeln(t.msg);
+        args.on("pack", (ProgramArgs args) {
+
+            // Validate
+            foreach(path; args.argAll("paths")) {
+                enforce(exists(path), "%s does not exist!".format(path));
+                enforce(isDir(path), "%s is not a directory!".format(path));
+                enforce(exists(buildPath(path, "payload.json")), "%s has no payload!".format(path));
+            }
+
+            foreach(path; args.argAll("paths")) {
+                pack(path);
+            }
+
+        }).on("unpack", (ProgramArgs args) {
+
+            // Validate
+            foreach(file; args.argAll("files")) {
+                enforce(exists(file), "%s does not exist!".format(file));
+                enforce(isFile(file), "%s is not a file!".format(file));
+            }
+
+            bool raw = args.hasFlag("raw");
+            foreach(file; args.argAll("files")) {
+                unpack(file, raw);
+            }
+        });
+    } catch (Exception ex) {
+        stdio.stderr.writeln(ex.msg);
+        return -1;
     }
+    return 0;
+    
+
+    // try {
+    //     if (args.length == 1 || (args[1] == "c" && args.length != 3)) {
+    //         stdio.writeln("inpunpack <c> FILE/FOLDER");
+    //         return;
+    //     }
+    //     if (args[1] == "c") {
+    //         pack(args[2]);
+    //     } else {
+    //         unpack(args[1]);
+    //     }
+    // } catch(Throwable t) {
+    //     stdio.writeln(t.msg);
+    // }
 }
 
-void unpack(string file) {
+void unpack(string file, bool raw) {
     string outFolder = file.baseName.stripExtension;
     size_t bufferOffset = 0;
     ubyte[] buffer = cast(ubyte[])std.file.read(file);
@@ -43,7 +92,8 @@ void unpack(string file) {
 
     // write the payload
     string jpayload = cast(string)buffer[bufferOffset..bufferOffset+=puppetDataLength];
-    write(buildPath(outFolder, "payload.json"), parseJSON(jpayload).toPrettyString());
+    if (raw) write(buildPath(outFolder, "payload.json"), jpayload);
+    else write(buildPath(outFolder, "payload.json"), parseJSON(jpayload).toPrettyString());
 
     // Enforce texture section existing
     enforce(inVerifySection(buffer[bufferOffset..bufferOffset+=8], TEX_SECTION), "Expected Texture Blob section, got nothing!");
