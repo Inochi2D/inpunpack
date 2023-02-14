@@ -1,18 +1,48 @@
 # INPUnpack
 A small utiltiy that allows unpacking and repacking a packed INP file for study and data recovery purposes.
 
-# How to use
 
-To unpack a file run
+# Usage Instructions
 ```
-inpunpack (file)
+inpunpack: Pack and unpack Inochi2D INP and INX files (1.1)
+
+USAGE
+  $ inpunpack [-h] [--version] pack|unpack
+
+FLAGS
+  -h, --help                prints help
+      --version             prints version
+
+SUBCOMMANDS
+  pack                      Pack INP file
+  unpack                    Unpack INP file
 ```
 
-To pack a folder back to an INP file again run
+## Unpacking
 ```
-inpunpack c (folder)
+inpunpack unpack: Unpack INP file
+
+USAGE
+  $ inpunpack unpack [-h] [-r] files 
+
+FLAGS
+  -h, --help                prints help
+  -r, --raw                 Unpack without validating JSON
+
+ARGUMENTS
+  files                     Files to unpack
 ```
 
-The contents of the file will be dumped to a folder of the same name
+## Packing
+```
+inpunpack pack: Pack INP file
 
-The contents of a folder will be packed to a file of the same name with the .inp extension.
+USAGE
+  $ inpunpack pack [-h] paths 
+
+FLAGS
+  -h, --help                prints help
+
+ARGUMENTS
+  paths                     Paths/directories to unpack
+```
