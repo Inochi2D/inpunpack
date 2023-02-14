@@ -44,5 +44,5 @@ FLAGS
   -h, --help                prints help
 
 ARGUMENTS
-  paths                     Paths/directories to unpack
+  paths                     Paths/directories to pack
 ```

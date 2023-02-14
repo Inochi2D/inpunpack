@@ -23,7 +23,7 @@ int main(string[] iargs) {
         )
         .add(
             new Command("pack", "Pack INP file")
-                .add(new Argument("paths", "Paths/directories to unpack").repeating())
+                .add(new Argument("paths", "Paths/directories to pack").repeating())
         )
         .parse(iargs);
     try {
