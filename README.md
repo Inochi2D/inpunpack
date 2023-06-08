@@ -1,5 +1,5 @@
 # INPUnpack
-A small utiltiy that allows unpacking and repacking a packed INP file for study and data recovery purposes.
+A small utility that allows unpacking and repacking a packed INP file for study and data recovery purposes.
 
 
 # Usage Instructions
